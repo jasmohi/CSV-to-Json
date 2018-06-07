@@ -22,15 +22,25 @@ module CsvToJsonConvertor
     end
   end
 
+  def self.lite_position(lite_position)
+    if lite_position == 'Bottom'
+      return 1
+    else
+      return 2
+    end
+  end
+
   def self.create_hash(data)
     sizes_hash = data.map{|i|
       {
         'name': i[:window_name],
         'height': "#{i[:height]}",
         'width': "#{i[:width]}",
+        'top_height': "#{i[:top_height]}",
         'lite': yes_no(i[:lite]),
         'lite_height': "#{i[:lite_height]}",
         'lite_mullions': yes_no(i[:lite_mullions]),
+        "lite_position": lite_position(i[:lite_position]),
         'panels_single': i[:panels_sgl],
         'panels_double': i[:panels_dbl],
         'bays': i[:bays],
@@ -42,10 +52,7 @@ module CsvToJsonConvertor
     windows_hash = {
       'uuid' => data[0][:uuid_rubysketch_use_only],
       'window_type': data[0][:window_type],
-      'brand': data[0][:brand],
       'range': data[0][:range],
-      'frame_width': data[0][:frame_width],
-      'frame_depth': data[0][:frame_depth],
       'unit': data[0][:units],
       'sizes': sizes_hash
     }
